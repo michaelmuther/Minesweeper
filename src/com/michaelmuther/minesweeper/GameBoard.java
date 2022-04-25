@@ -6,15 +6,20 @@ public class GameBoard {
     private final int BOARD_HEIGHT = 9;
     private final int BOARD_WIDTH = 9;
     private final char[][] gameBoard = new char[BOARD_HEIGHT][BOARD_WIDTH];
+    private final char[][] markedGameBoard;
     private final char MINE = 'X';
     private final char SPACE = '.';
+    private int markedMines = 0;
+    private int marks = 0;
 
     public GameBoard(int mines) {
         this.mines = mines;
         generateGameBoard();
+        markedGameBoard = gameBoard;
     }
 
     private void generateGameBoard() {
+
         double mineFactor = (double) mines / (double) (BOARD_HEIGHT * BOARD_WIDTH);
 //        System.out.println(mineFactor); // TEST
         int totalMines;
@@ -101,20 +106,51 @@ public class GameBoard {
         }
     }
 
+    public boolean setMark(int index1, int index2) {
+        final char MARK = '*';
+        final int INDEX_SHIFT = 1;
+        if (markedGameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] == MINE) {
+            markedGameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] = MARK;
+            markedMines++;
+            marks++;
+            return true;
+        } else if (markedGameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] == SPACE) {
+            markedGameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] = MARK;
+            marks++;
+            return true;
+        } else if (markedGameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] == MARK) {
+            if (gameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] == MINE) {
+                markedGameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] = MINE;
+                markedMines--;
+                marks--;
+                return true;
+            } else {
+                markedGameBoard[index1 - INDEX_SHIFT][index2 - INDEX_SHIFT] = SPACE;
+                marks--;
+                return true;
+            }
+        } else { // field is a number
+            return false;
+        }
+    }
+
     public char[][] getGameBoard() {
         return gameBoard;
     }
 
-}
+    public char[][] getMarkedGameBoard() {
+        return markedGameBoard;
+    }
 
-//    private char[][] gameBoard = {
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'},
-//            {'.', '.', 'X', '.', '.', '.', '.', '.', '.'}
-//    };
+    public int getMines() {
+        return mines;
+    }
+
+    public int getMarkedMines() {
+        return markedMines;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+}
