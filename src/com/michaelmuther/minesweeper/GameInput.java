@@ -4,22 +4,33 @@ import java.util.Scanner;
 
 public class GameInput {
 
-    private final int index1;
-    private final int index2;
+    private final Scanner s = new Scanner(System.in);
+    private final String SET_MARKS = "Set/unset mines marks or claim a cell as free:";
+    private final int row;
+    private final int col;
+    private boolean isFreeInput = false;
+    private final String input;
 
     public GameInput() {
-        final Scanner s = new Scanner(System.in);
-        final String SET_MARKS = "Set/delete mines marks (x and y coordinates):";
         System.out.println(SET_MARKS);
-        index2 = s.nextInt();
-        index1 = s.nextInt();
+        col = s.nextInt();
+        row = s.nextInt();
+        input = s.next();
+        if (input.equals("free")) {
+            isFreeInput = true;
+        }
+//        System.out.println(isFreeInput); // TEST
     }
 
-    public int getIndex1() {
-        return index1;
+    public int getRow() {
+        return row;
     }
 
-    public int getIndex2() {
-        return index2;
+    public int getCol() {
+        return col;
+    }
+
+    public boolean isFreeInput() {
+        return isFreeInput;
     }
 }

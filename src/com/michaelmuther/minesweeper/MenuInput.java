@@ -2,11 +2,11 @@ package com.michaelmuther.minesweeper;
 
 import java.util.Scanner;
 
-public class Input {
+public class MenuInput {
 
     private final int mines;
 
-    public Input() {
+    public MenuInput() {
         Scanner s = new Scanner(System.in);
         final String INPUT = "How many mines do you want on the field?";
         System.out.println(INPUT);
